@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
 
             <div class="justify-center">
-                <button>Entrar</button>
+                <button id="t">Entrar</button>
             </div> <br>
 
             <p>Não tem uma conta?
@@ -42,3 +42,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </body>
 
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+	$('#t').click(function() {
+		alert('erro')
+	})
+</script>
