@@ -17,14 +17,30 @@ class Cadastro extends CI_Controller {
 	public function cadastrarUser()
 	{
 		$data = [
-			'userTipo' => 'F',
+			'userTipo' => $this->input->post('tipo'),
 			'cpf' => '11111111111',
+			'cnpj' => '11111111111111',
 			'nome' => $this->input->post('nome'),
 			'telefone' => $this->input->post('telefone'),
 			'email' => $this->input->post('email'),
 			'senha' => password_hash($this->input->post('senha'), PASSWORD_BCRYPT)
 		];
 
-		$this->CadastroUserModel->cadastrar($data);
+		$response = $this->CadastroUserModel->cadastrar($data);
+
+		if($response){
+			$data = [
+				'resp' => 'success'
+			];
+			echo json_encode($data);
+			exit();
+		}
+		
+
+		$data = [
+			'resp' => 'error'
+		];
+
+		echo json_encode($data);
 	}
 }

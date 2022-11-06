@@ -7,12 +7,12 @@
 }
 
 body {
-    width: 100%;
-    height: 100vh;
+    /* width: 100%; */
+    /* height: 100vh; */
     background-image: url(https://estatico.amcham.com.br/emkt/logos/1255597-azul-branco-baixo-poli-triangulo-formas-fundo-gr%C3%A1tis-vetor.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: fixed;
+    /* background-attachment: fixed; */
 }
 
 .container {
@@ -27,6 +27,7 @@ body {
     padding: 30px;
     border-radius: 10%;
     box-shadow: 5px 3px 1px 0px #ffffff90;
+	width: 450px;
 }
 
 h1 {

@@ -19,12 +19,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             <div id="c">
                 <div>
-                    <input type="radio" name="tipo_usuario" id='tipo_usuariof'>
+                    <input type="radio" name="tipo_usuario" id='tipo_usuariof' value="f">
                     <label for="tipo_usuariof">Pessoa Fisica</label>
                 </div>
 
                 <div>
-                    <input type="radio" name="tipo_usuario" id='tipo_usuarioj'>
+                    <input type="radio" name="tipo_usuario" id='tipo_usuarioj' value="j">
                     <label for="tipo_usuarioj">Pessoa Juridica</label>
                 </div>
             </div>
@@ -64,21 +64,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.all.min.js" integrity="sha256-dOvlmZEDY4iFbZBwD8WWLNMbYhevyx6lzTpfVdo0asA=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
 	$('#cadastrar').click(function() {
 		
+		var tipo = ''
+
+		if($('#tipo_usuariof').is(':checked')){
+          tipo = 'f'
+        } else if($('#tipo_usuarioj').is(':checked')){
+			tipo = 'j'
+		} else{
+			Swal.fire({
+  				icon: 'error',
+  				title: 'Oops...',
+  				text: 'Por favor preencha o tipo'
+			})
+			return 0
+		}
+
 		nome = $('#nome').val()
 		telefone = $('#telefone').val()
 		email = $('#email').val()
 		senha = $('#senha').val()
 		confirmaSenha = $('#confirmSenha').val()
-
+		
 		$.ajax({
 			type: "POST",
 			url: "cadastro/cadastrarUser",
 			dataType: "json",
 			data: {
+				tipo : tipo,
 				nome: nome,
 				telefone: telefone,
 				email: email,
@@ -87,8 +104,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			beforeSend: function(){
 				console.log('sending...')
 			},
-			success: function(){
-				alert('success')
+			success: function(jsonContent){
+
+				console.log(jsonContent)
+				if(jsonContent['resp'] == 'success'){
+					Swal.fire(
+  						'Tudo certo!',
+  						'Cadastro realizado com sucesso!',
+  						'success'
+					)
+				}
 			},
 			error: function(){
 				alert('error!!!')

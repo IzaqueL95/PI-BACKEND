@@ -33,9 +33,9 @@ class CadastroUserModel extends CI_Model {
 		$conn = self::conn();
 
 		$query = "INSERT INTO user
-				  (user_name, user_email, user_password, user_tipo, user_cpf)
+				  (user_name, user_email, user_password, user_tipo, user_cpf, user_cnpj)
 				  VALUES
-				  (:user_name, :user_email, :user_password, :user_tipo, :user_cpf)
+				  (:user_name, :user_email, :user_password, :user_tipo, :user_cpf, :user_cnpj)
 		";
 
 		$statment = $conn->prepare($query);
@@ -44,6 +44,7 @@ class CadastroUserModel extends CI_Model {
 		$statment->bindValue('user_password', $data['senha']);
 		$statment->bindValue('user_tipo', $data['userTipo']);
 		$statment->bindValue('user_cpf', $data['cpf']);
+		$statment->bindValue('user_cnpj', $data['cnpj']);
 
 		return $statment->execute();
 	}

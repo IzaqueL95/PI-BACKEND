@@ -28,18 +28,64 @@ class ValidarAcessoModel extends CI_Model {
 
 	}
 
-	public function validarAcesso(Array $data): bool
+	public function validarAcesso(Array $dataUser)
 	{
 		
 		$conn = self::conn();
 
-		$query = "SELECT * FROM USUARIO
-			WHERE EMAIL = :email";
+		$query = "SELECT * FROM user
+			WHERE user_email = :email";
 			
-		$prepare = $conn->query($query);
-		$response = $prepare->fetchAll(PDO::FETCH_ASSOC);
+		$statment = $conn->prepare($query);
+		$statment->bindParam(':email', $dataUser['userEmail']);
+		$statment->execute();
 
-		return true;
+		$data = $statment->fetch(PDO::FETCH_ASSOC);
+
+		if(count($data) === 0) {
+            $dataResp = [
+                'status' => 'incorrectEmail',
+                'msg' => 'E-mail não cadastrado'  
+            ];
+            return $dataResp;
+        }
+
+		if(!password_verify($dataUser['userPass'], $data['user_password'])){
+			$dataResp = [
+                'status' => 'errorIncorrectMailOrPass',
+                'msg' => 'E-mail ou senha incorretos'  
+            ];
+            return $dataResp;
+
+		} else {
+
+			$query = "SELECT a.user_id,
+							 a.user_name,
+							 a.user_email,
+							 a.user_tipo,
+							 a.user_score
+					  FROM user a
+					  WHERE a.user_email = :user_email
+			";
+			$statment = $conn->prepare($query);
+			$statment->bindParam(':user_email', $dataUser['userEmail']);
+			$statment->execute();
+
+			$resp = $statment->fetch(PDO::FETCH_ASSOC);
+
+			$this->session->set_userdata([
+				'logged' => true,
+				'nome' => $resp['user_name']
+			]);
+
+			$dataResponse = [
+				'status' => 'usuarioLogado'
+			];
+
+			return $dataResponse;
+
+		}
+
 
 	}
 }

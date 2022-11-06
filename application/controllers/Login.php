@@ -17,29 +17,34 @@ class Login extends CI_Controller {
 	public function Logar()
 	{
 
-		$jsonStatus[] = [
-			'status' => '',
-			'msg' => ''
-		];
-
-
 		$dataUser = [
-			'userEmail' => $this->input->post('user_email'),
-			'userPass'  => $this->input->post('user_pass') 
+			'userEmail' => $this->input->post('email'),
+			'userPass'  => $this->input->post('senha') 
 		];
 
+		// var_dump($dataUser);
+		// if(!isset($dataUser['userEmail']) || !isset($dataUser['UserPass'])){
+		// 	$jsonStatus = [
+		// 		'status' => 'ERROR',
+		// 		'msg' => 'Usuario ou senha não preencidos!'
+		// 	];
 
-		if(!isset($dataUser['userEmail']) || !isset($dataUser['userPass'])){
-			$jsonStatus = [
-				'status' => 'EROR',
-				'msg' => 'Usuario ou senha não preencidos!'
-			];
-
-			echo json_encode($jsonStatus);
-		}
+		// 	echo json_encode($jsonStatus);
+		// }
 
 		$response = $this->ValidarAcessoModel->validarAcesso($dataUser);
 
-		echo json_encode($response);
+		if($response['status'] == 'usuarioLogado'){
+
+			echo json_encode($response);
+			exit();
+		}
+
+		$error = [
+			'status' => 'userOrEmailIncorrect'
+		];
+
+		echo json_encode($error);
+
 	}
 }
